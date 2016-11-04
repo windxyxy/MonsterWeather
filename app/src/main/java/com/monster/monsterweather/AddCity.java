@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.baidu.apistore.sdk.ApiCallBack;
 import com.baidu.apistore.sdk.ApiStoreSDK;
@@ -29,6 +30,10 @@ public class AddCity extends AppCompatActivity {
 
     public void addCityName(View view) {
         cityName = et_cityName.getText().toString().trim();
+        if (cityName.equals("")){
+            Toast.makeText(AddCity.this,"输入不能为空",Toast.LENGTH_SHORT).show();
+            return;
+        }
         Parameters param = new Parameters();
         param.put("cityname", cityName);
         Log.e("MonsterTag", "AddCity__cityName=" + cityName);
@@ -40,10 +45,11 @@ public class AddCity extends AppCompatActivity {
                     public void onSuccess(int i, String s) {
                         super.onSuccess(i, s);
                         Log.e("MontserTag", "onSuccess   i = "+i);
+
                         DataCity dataCity = new DataCity();
                         FromGson fromGson = new FromGson();
                         dataCity = fromGson.getTianqi(s, dataCity.getClass());
-                        if (s.length() > 0) {
+                       try {
                             cityCode = dataCity.retData.cityCode;
                             Intent intent = new Intent();
                             intent.putExtra("cityName", cityName);
@@ -51,8 +57,9 @@ public class AddCity extends AppCompatActivity {
                             AddCity.this.setResult(RESULT_OK, intent);
                             AddCity.this.finish();
 
-                        } else {
-                            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(AddCity.this)
+                        } catch (Exception e){
+                           Log.e("MonsterTag","抛出异常");
+                             new AlertDialog.Builder(AddCity.this)
                                     .setTitle("提示")
                                     .setMessage("输入的地址有误，请重新输入！")
                                     .setNegativeButton("确定", new DialogInterface.OnClickListener() {
@@ -60,7 +67,7 @@ public class AddCity extends AppCompatActivity {
                                         public void onClick(DialogInterface dialog, int which) {
 
                                         }
-                                    });
+                                    }).show();
                             return;
                         }
 

@@ -8,9 +8,10 @@
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_above="@+id/ll_top"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:src="@mipmap/add"
         android:onClick="addCity"/>
 
@@ -26,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="cityName"
+            android:text="城市"
             android:textSize="40sp" />
 
         <TextView
@@ -35,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:text="temprature"
+            android:text="温度"
             android:textSize="60sp" />
 
         <TextView
@@ -44,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:text="aqi"
+            android:text="污染"
             android:textSize="20sp" />
 
         <TextView
@@ -54,7 +55,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="10dp"
-            android:text="type"
+            android:text="天气"
             android:textSize="30sp" />
     </LinearLayout>
 

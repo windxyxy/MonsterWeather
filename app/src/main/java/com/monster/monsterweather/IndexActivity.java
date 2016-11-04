@@ -1,9 +1,12 @@
 package com.monster.monsterweather;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -43,8 +46,16 @@ public class IndexActivity extends AppCompatActivity {
 
         initView();
 
-        cityName = "北京";
-        cityCode = "101010100";
+        Intent intent = this.getIntent();
+        cityName = intent.getStringExtra("cityName");
+        cityCode = intent.getStringExtra("cityCode");
+
+        Log.e("MonsterTag","getStringCityName="+cityName);
+        Log.e("MonsterTag","getStringCityCode="+cityCode);
+
+
+//        cityName = "北京";
+//        cityCode = "101010100";
 
         Parameters param = new Parameters();
         param.put("cityname", cityName);
@@ -79,7 +90,6 @@ public class IndexActivity extends AppCompatActivity {
                     @Override
                     public void onError(int i, String s, Exception e) {
                         super.onError(i, s, e);
-                        Log.e("MonError", "Error Type = " + s);
                     }
 
                     @Override
@@ -89,6 +99,9 @@ public class IndexActivity extends AppCompatActivity {
                 });
     }
 
+    /*
+    * 选择城市
+    * */
     public void addCity(View view) {
         Intent intent = new Intent();
         intent.setClass(IndexActivity.this, AddCity.class);
@@ -103,10 +116,9 @@ public class IndexActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     String newCityName = data.getExtras().getString("cityName");
                     String newCityCode = data.getExtras().getString("cityCode");
+
                     cityName = newCityName;
                     cityCode = newCityCode;
-
-                    Log.e(TAG,"cityName="+cityName+"\ncityCode="+cityCode);
 
                     Parameters param = new Parameters();
                     param.put("cityname", cityName);
@@ -141,7 +153,6 @@ public class IndexActivity extends AppCompatActivity {
                                 @Override
                                 public void onError(int i, String s, Exception e) {
                                     super.onError(i, s, e);
-                                    Log.e("MonError", "Error Type = " + s);
                                 }
 
                                 @Override
@@ -151,5 +162,27 @@ public class IndexActivity extends AppCompatActivity {
                             });
                 }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK){ //监听返回键事件
+            new AlertDialog.Builder(IndexActivity.this)
+                    .setTitle("提示")
+                    .setMessage("确定退出程序？")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            IndexActivity.this.finish();
+                        }
+                    }).show();
+        }
+        return super.onKeyDown(keyCode, event);
+
     }
 }
