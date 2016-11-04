@@ -19,6 +19,7 @@ public class IndexActivity extends AppCompatActivity {
     private TextView tv_cityName, tv_tempreture, tv_aqi, tv_type, tv_today, tv_todayType, tv_todayTem, tv_gm, tv_fs, tv_yd;
     private int requestCode = 0x11;
     private String cityName;
+    private String cityCode;
 
     private void initView() {
         tv_cityName = (TextView) findViewById(R.id.tv_cityName);
@@ -42,10 +43,12 @@ public class IndexActivity extends AppCompatActivity {
 
         initView();
 
+        cityName = "北京";
+        cityCode = "101010100";
+
         Parameters param = new Parameters();
-        Log.e(TAG,"cityName first= "+cityName);
         param.put("cityname", cityName);
-        param.put("cityid", "101010100");
+        param.put("cityid", cityCode);
         ApiStoreSDK.execute("http://apis.baidu.com/apistore/weatherservice/recentweathers",
                 ApiStoreSDK.GET,
                 param,
@@ -88,7 +91,7 @@ public class IndexActivity extends AppCompatActivity {
 
     public void addCity(View view) {
         Intent intent = new Intent();
-        intent.setClass(IndexActivity.this,AddCity.class);
+        intent.setClass(IndexActivity.this, AddCity.class);
         startActivityForResult(intent, requestCode);
     }
 
@@ -99,13 +102,15 @@ public class IndexActivity extends AppCompatActivity {
             case 0x11:
                 if (resultCode == RESULT_OK) {
                     String newCityName = data.getExtras().getString("cityName");
+                    String newCityCode = data.getExtras().getString("cityCode");
                     cityName = newCityName;
-                    Log.e(TAG,"cityName result= "+cityName);
+                    cityCode = newCityCode;
+
+                    Log.e(TAG,"cityName="+cityName+"\ncityCode="+cityCode);
 
                     Parameters param = new Parameters();
-                    Log.e(TAG,"cityName first= "+cityName);
                     param.put("cityname", cityName);
-                    param.put("cityid", "101010100");
+                    param.put("cityid", cityCode);
                     ApiStoreSDK.execute("http://apis.baidu.com/apistore/weatherservice/recentweathers",
                             ApiStoreSDK.GET,
                             param,
